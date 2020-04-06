@@ -1,0 +1,718 @@
+Part 1: C++, An Overview
+Chapter 1. Getting Started
+
+Vocabulary
+semicolon(;), quotation marks(''), parentheses(()), comma(,), curly braces({}), double quotation marks(""),
+delimiter, double precision, pound sign (#), angle brackets (<,>) ,asterisk(*), comment pair (/*,*/), slash(/), 
+white space( )，double slash (//), output operator (<), flushes the output buffer, input operator (>>), punctuation,
+addition(+), subtraction(-), multiplication(*), and division(/), equality(==), inequality(!=), greater than(>), 
+less than(<), subscript operator, shorthand notation, address-of operator (&), dereference operator (*), 
+dot operator (.), arrow operator ( ->), underscore(_), double colon (::), tilde (~), encapsulation, Backslash(\),
+escape sequence(\ooo), 2 to the power of 10(2e10), exponential value, imaginary part(i), conditional operator (?:),
+increment (++) and decrement (--), hyphen(-), backticks (`) not normal quotes ('), modulo(%), 
+factorial operator(n! Pronounced n factorial), iterate, recursive, permutation, rounding, unary operator(~), 
+
+
+$ CC prog1.C 
+The conditional directive
+#ifndef
+
+We can define a preprocessor constant on the command line as we compile our program using the -D option 
+followed by the name of the preprocessor constant: HYPERLINK  \l "ch01fn02"[2]
+$ CC -DDEBUG main.C 
+
+The preprocessor name __cplusplus (two underscores) is automatically defined when compiling C++, 
+so we can conditionally include code based on whether we are compiling C++. For example:
+#ifdef __cplusplus 
+   // ok: we're compiling C++ 
+   // we'll explain extern "C" in Chapter 7! 
+   extern "C" 
+#endif 
+
+
+The name __STDC__ is defined when compiling Standard C. 
+Of course, __cplusplus and __STDC__ are never defined at the same time.
+
+Two other useful predefined names are __LINE__ and __FILE__. 
+__LINE__ holds the current line number of the file being compiled.
+__FILE__ contains the name of the current file being compiled. They might be used as follows:
+if ( element_count == 0 ) 
+     cerr << "Error: " << __FILE__ 
+          << " : line " << __LINE__ 
+          << "element_count must be non-zero.\n"; 
+
+(__TIME__) and date (__DATE__) 
+
+assert() is a generally useful preprocessor macro provided in the C language Standard Library.
+
+To use assert(), we must include its associated header file.
+#include <assert.h>              //seesea: doesn't work
+
+The C++ name for this header file is cassert. 
+The C++ name of a C library header file is always the C name prefixed with the letter c 
+and in which the .h file suffix has been dropped 
+
+#include <fstream> 
+To open a file for output, we declare an object of type ofstream:
+ofstream outfile( "name-of-file" ); 
+
+Function overloading allows the same name to be used for two or more functions with the constraint 
+that each must have a unique parameter list, either by the number or the types of the parameters. 
+
+void print( ostream &os )  { os < _val;  } 
+
+ostream& operator<( ostream &os, const Example2<elemType> &ex ) 
+        { ex.print( os ); return os; } 
+
+A special catch clause capable of handling raised exceptions of all types is the following:
+catch( ... ) 
+{ 
+    // handles all exceptions, although it cannot 
+    // directly access the exception object 
+}
+
+A namespace alias allows us to associate an alternative, shorter or generic name with an existing namespace.
+For example:
+// provide a generic alias 
+namespace LIB = IBM_Canada_Laboratory; 
+
+std::string current_chapter = "A Tour of C++";       // ok: use qualified name 
+using std::string;   // ok: using declaration 
+
+
+
+Use the qualified name notation to access the type definitions within the Exercise namespace.
+Use the using declaration to access the type definitions.
+Use the namespace alias mechanism.
+Use the using directive.
+
+There are two primary differences between our Array class templates implementation and that of the vector class template. 
+The first difference is that the vector class template supports the notion 
+both of assignment to an existing array element and of insertion of additional elements; 
+The second difference is Rather than provide a large set of member operations that can be applied to a vector, 
+such as sort(), min(), max(), find(), and so on, the vector class provides a minimal set: 
+operations such as the equality and less-than operators, size(), and empty(). 
+The general operations such as sort(), min(), max(), find(),
+and so on are instead provided as independent generic algorithms.
+
+      vector< int > vec( size ); 
+      for ( int ix = 0; ix < size; ++ix ) 
+           vec[ ix ] = ix; 
+
+       vector< int > vec( size );         
+       vector< int >::iterator iter = vec.begin();         
+       for ( int ix = 0; iter != vec.end(); ++iter, ++ix ) 
+             *iter = ix; 
+
+The following is a sampling of the generic algorithms available of Vector:
+Search algorithms: find(), find_if(), search(), binary_search(), count(), and count_if().
+Sorting and general ordering algorithms: sort(), partial_sort(), merge(), partition(), rotate(), reverse(), 
+and random_shuffle().
+Deletion algorithms: unique() and remove().
+Numeric algorithms: accumulate(), partial_sum(), inner_product(), and adj- acent_difference().
+Generation and mutation algorithms: generate(), fill(), transform(), copy(), and for_each().
+Relational algorithms: equal(), min(), and max().
+
+The generic algorithms also accept a pair of pointers into a built-in array. For example, given the array
+int ia[7] = { 10, 7, 9, 5, 3, 7, 1 }; 
+sort( ia, ia+7 ); 
+
+reverse();
+
+128u   1024UL    1L    8Lu 
+3.14159F 0.1f   12.345L  0.0 
+3e1      1.0E-3 2.       1.0L 
+
+
+
+
+Additionally, a character literal can be preceded by L, as in
+L'a' 
+This is spoken of as a wide-character literal and has type wchar_t. 
+Wide-character literals support language character sets, such as Chinese and Japanese, 
+in which some of the character values cannot be represented within a single char.
+
+Two string or wide string literals, if adjacent within the program, are concatenated and then suffixed with a trailing null. 
+For example,
+"two" "some" is printed as twosome. 
+
+Table 3.1. C++ Keywords 
+
+asm
+auto
+bool
+break
+case
+catch
+char
+class
+const
+const_cast
+continue
+default
+delete
+do
+double
+dynamic_cast
+else
+enum
+explicit
+export
+extern
+false
+float
+for
+friend
+goto
+if
+inline
+int
+long
+mutable
+namespace
+new
+operator
+private
+protected
+public
+register
+reinterpret_
+return
+ 
+ 
+ 
+cast
+ 
+short
+signed
+sizeof
+static
+static_cast
+struct
+switch
+template
+this
+throw
+true
+try
+typedef
+typeid
+typename
+union
+unsigned
+using
+virtual
+void
+volatile
+wchar_t
+while
+ 
+ 
+
+In addition, each built-in data type supports a special constructor syntax to initialize its object to zero. 
+For example:
+// sets ival to 0, dval to 0.0 
+int ival = int(); 
+double dval = double(); 
+
+C++ provides two string representations: the C-style character string and the string class type introduced with Standard C++. 
+
+A C-style character string can be of zero length (and therefore treated as empty) in one of two ways:
+the character pointer can be set to zero and therefore point to no object; alternatively, the pointer can be set,
+but the array it refers to contains only the null character. For example:
+// pc1 addresses no array object 
+char *pc1 = 0; 
+// pc2 addresses the null character 
+const char *pc2 = ""; 
+
+const char *pc = ", ";
+string s1( "hello" );
+string s2( "world" );
+string s3 = s1 + pc + s2 + "\n";
+
+string s1;
+const char *pc = "a character array";
+s1 = pc; // ok
+
+string s1;
+const char *str = s1.c_str(); //ok 
+
+replace( str.begin(), str.end(), '.', '_' ); 
+
+We can, however, define a pointer reference, but can't define a pointer a to a reference. For example:
+// ok: refPtr is a reference to a pointer
+int *&ptrVal2 = pi;
+Once defined, a reference cannot be made to refer to another object 
+
+A const reference can be initialized to an object of a different type 
+(provided there is a conversion from the one type to the other) 
+as well as to nonaddressable values, such as literal constants. For example:
+double dval = 3.14159;  
+// legal for const references only 
+const int &ir = 1024; 
+const int &ir2 = dval; 
+const double &dr = dval + 1.0; 
+The same initializations are not legal for non-const references. 
+
+const int ival = 1024;  
+// error: requires a const reference 
+int *&pi_ref = &ival; 
+Our first attempt to correct the definition of pi_ref might be the following, but it does not work梔o you see why?
+const int ival = 1024;  
+// still an error 
+const int *&pi_ref = &ival; 
+If we read this definition from right to left, 
+we discover that pi_ref is a reference to a pointer to an object of type int defined to be const. 
+Our reference isn't to a constant but rather to a nonconstant pointer that addresses a constant object. 
+The correct definition is as follows:
+const int ival = 1024;  
+// ok: this is accepted 
+const int *const &pi_ref = &ival; 
+
+Both a bool object, such as found, and the bool literals are implicitly promoted to type int 
+when an arithmetic value is necessary 
+Just as the literals false and true are automatically promoted to the integer values 0 and 1, if necessary,
+arithmetic and pointer values are implicitly converted to a value of type bool.
+A zero value or a null pointer value is converted to false; all other values are converted to true. For example:
+// returns count of occurrences 
+extern int find( const string& ); 
+bool found = false; 
+if ( found = find( "rosebud" )) 
+     // ok: found == true  
+// returns pointer to item if present 
+extern int* find( int value );  
+if ( found = find( 1024 )) 
+     // ok: found == true 
+
+If we try to pass any value to open_file() other than one of input, output, or append, a compile-time error occurs.
+Moreover, if we pass it an equivalent integer value, as in the following, the compiler still flags it as an error.
+// error: 1 is not an enumerator of open_modes ... 
+open_file( "Jonah", 1 ); 
+
+ 
+A value can be explicitly assigned to an enumerator. This value need not be unique. 
+In the following example, point2d is assigned 2, point2w by default is bumped up by 1 to 3, 
+point3d is explicitly assigned 3, and point3w, again by default, is bumped 1 to 4.
+// point2d == 2, point2w == 3, point3d == 3, point3w == 4 
+enum Points { point2d = 2, point2w, point3d = 3, point3w };
+When necessary, however, an enumeration type is automatically promoted to an arithmetic type. For example:
+const int array_size = 1024;  
+// ok: pt2w promoted to int 
+int chunk_size = array_size * pt2w; 
+
+If the dimension size is greater than the number of listed elements, 
+the array elements not explicitly initialized are set to 0.
+// ia ==> { 0, 1, 2, 0, 0 } 
+const int array_size = 5; 
+int ia[ array_size ] = { 0, 1, 2 }; 
+
+A character array can be initialized with either a list of comma-separated character literals
+enclosed in braces or a string literal. Note, however, that the two forms are not equivalent.
+The string constant contains the additional terminating null character. For example:
+const char ca1[] = { 'C', '+', '+' }; 
+const char ca2[] = "C++"; 
+ca1 is of dimension 3; ca2 is of dimension 4. The following declaration will be flagged as an error:
+// error: "Daniel" is 7 elements 
+const char ch3[ 6 ] = "Daniel"; 
+
+// ok: array of pointers of type int* 
+int *iap [] = { &ix, &jx, &kx }; 
+
+The typedef mechanism provides a general facility for introducing a mnemonic synonym for a built-in 
+or user-defined data type. For example:
+typedef double      wages; 
+typedef vector<int>  vec_int; 
+typedef vec_int     test_scores; 
+typedef bool        in_attendance; 
+typedef int         *Pint; 
+
+An object is declared volatile when its value can possibly be changed in ways outside either the control 
+or detection of the compiler.
+The essential purpose of the volatile qualifier is to notify the compiler that the object 
+can change in ways undetectable by the compiler. The compiler, therefore, 
+should not aggressively optimize code referring to the object.
+
+#include <utility> 
+pair< string, string > author( "James", "Joyce" ); 
+The individual elements of the pair can be accessed as first and second using the member access notation. 
+
+Operator
+Function
+Use
+*
+multiplication
+expr * expr
+/
+division
+expr / expr
+%
+remainder
+expr % expr
++
+addition
+expr + expr
+-
+subtraction
+expr - expr
+
+Operator
+Function
+Use
+!
+logical NOT
+!expr
+<
+less than
+expr < expr
+<=
+less than or equal
+expr <= expr
+>
+greater than
+expr > expr
+>=
+greater than or equal
+expr >= expr
+==
+equality
+expr == expr
+!=
+inequality
+expr != expr
+&&
+logical AND
+expr && expr
+||
+logical OR
+expr || expr
+Note: The result of these operators is type bool.
+
+
+
+
+ 
+For example, we can either use the member access syntax
+double re = complex_obj.real(); 
+double im = complex_obj.imag(); 
+or the equivalent nonmember syntax:
+// equivalent to the member syntax, above 
+double re = real( complex_obj ); 
+double im = imag( complex_obj );
+
+The sizeof operator returns the size, in bytes, of an object or type name. It takes the following forms:
+sizeof (type name ); 
+sizeof ( object ); 
+sizeof object; 
+The value returned is of type size_t, a machine-specific typedef found in the cstddef header file. 
+
+When sizeof is applied to type char, the result is guaranteed to be 1 under all C++ implementations.
+
+Operator
+Function
+Use
+~
+bitwise NOT
+~expr
+<<
+left shift
+expr1 << expr2
+>>
+right shift
+expr1 >> expr2
+&
+bitwise AND
+expr1 & expr2
+^
+bitwise XOR
+expr1 ^ expr2
+|
+bitwise OR
+expr1 | expr2
+&=
+bitwise AND assign
+expr1 &= expr2
+^=
+bitwise XOR assign
+expr1 ^= expr2
+|=
+bitwise OR assign
+expr1 |= expr2
+
+Operation
+Function
+Use
+test( pos )
+is pos bit on?
+a.test( 4 )
+any()
+is any bit on?
+a.any()
+none()
+are no bits on?
+a.none()
+count()
+number of bits on
+a.count()
+size()
+number of bit elems
+a.size()
+[ pos ]
+access pos bit
+a[ 4 ]
+flip()
+reverse all bits
+a.flip()
+flip( pos )
+reverse pos bit
+a.flip( 4 )
+set()
+turn on all bits
+a.set()
+set( pos )
+turn on pos bit
+a.set( 4 )
+reset()
+turn off all bits
+a.reset()
+reset(pos)
+turn off pos bit
+a.reset( 4 )
+ 
+Operation
+Function
+Use
+test( pos )
+is pos bit on?
+a.test( 4 )
+any()
+is any bit on?
+a.any()
+none()
+are no bits on?
+a.none()
+count()
+number of bits on
+a.count()
+size()
+number of bit elems
+a.size()
+[ pos ]
+access pos bit
+a[ 4 ]
+flip()
+reverse all bits
+a.flip()
+flip( pos )
+reverse pos bit
+a.flip( 4 )
+set()
+turn on all bits
+a.set()
+set( pos )
+turn on pos bit
+a.set( 4 )
+reset()
+turn off all bits
+a.reset()
+reset(pos)
+turn off pos bit
+a.reset( 4 )
+ 
+To turn off an individual bit, we can use either the reset() or the subscript operator.
+Both of the following operations turn off bitvec's first bit:
+// equivalent; turn off first bit 
+bitvec.reset( 0 ); 
+bitvec[ 0 ] = 0; 
+
+bitset< 32 > bitvec2( 0xffff ); 
+
+Alternatively, we can construct a bitset object by passing in a string argument 
+representing a collection of zeros and ones, as in the following:
+// equivalent initialization as bitvec3 
+string bitval( "1010" ); 
+bitset< 32 > bitvec4( bitval ); 
+
+Alternatively, one can mark a range of the string elements with which to initialize the bitset.
+For example, in the following
+// start at position 6, for a length of 4: 1010 
+string bitval( "1111110101100011010101" ); 
+bitset< 32 > bitvec5( bitval, 6, 4 ); 
+
+bitvec5 is initialized with bit positions 1 and 3 set to 1 while its remaining bit positions are set to 0,
+the same as bitvec3 and bitvec4. If we leave off the third parameter indicating the length of characters 
+with which to mark the range, the range consists of the indicated position to the end of the string. 
+For example:
+// start at position 6, continuing to end of string: 1010101 
+string bitval( "1111110101100011010101" ); 
+bitset< 32 > bitvec6( bitval, 6 ); 
+
+The bitset class supports two member functions that can convert a bitset object into another type.
+In the one case, we can convert any bitset object into a string representation using the to_string() operation:
+string bitval( bitvec3.to_string() );
+In the second case, we can convert any bitset object into an integral representation of type 
+unsigned long using the to_ulong() operation, provided that the underlying representation of the bitset 
+can be represented in an unsigned long.
+
+The general form for the explicit cast notation is the following:
+cast-name< type >( expression ); 
+
+Here cast-name is one of static_cast, const_cast, dynamic_cast, or reinterpret_cast, 
+type is the target type of the conversion, and expression is the value to be cast.
+
+An explicit conversion is spoken of as a cast and is supported by the following set of named cast operators:
+static_cast, dynamic_cast, const_cast, and reinterpret_cast. 
+
+4.14.4 Old-Style Casts
+The old-style cast notation takes one of the following two forms:
+// C++ function cast notation 
+type (expr);  
+// C-language cast notation 
+(type) expr; 
+
+The smallest independent unit in a C++ program is a statement.
+
+A goto statement may not jump forward over a declaration statement that is not enclosed within a statement block.
+
+Capacity is the total number of elements that can be added to a container before it needs to regrow itself. 
+Size, on the other hand, is the number of elements a container currently holds. 
+
+   // input stream iterator tied to standard input 
+   istream_iterator<string> infile( cin ); 
+    
+   // input stream iterator marking end-of-stream 
+   istream_iterator<string> eos; 
+
+istream& 
+getline( istream &is, string str, char delimiter ); 
+
+string::size_type pos = name.find( "Anna" ); 
+
+    string numerics( "0123456789" ); 
+    string name( "r2d2" ); 
+    string::size_type pos = name.find_first_of( numerics ); 
+rfind()
+find_last_of() 
+find_last_not_of()
+find_first_not_of() 
+
+#include <locale> 
+tolower(), isalpha(), isdigit(), ispunct(), isspace(), toupper(), 
+
+assign() and append() string operations. They allow us to, in turn,
+copy and concatenate a portion of one string object to another. 
+    string quote1("When lilacs last in the dooryard bloom'd");
+    string quote2("The child is father of the man");
+    string s3;
+    s3.assign(quote2, 0, 13);
+    s3.append(quote1, 17, 16);
+
+string new_str( "Abstract Data Type" ); 
+sentence.replace( position, length, new_str ); 
+
+count(keyValue): count() returns the number of occurrences of keyValue within a map.
+find(keyValue): find() returns an iterator to the instance within the map if the instance is present 
+or returns an iterator equal to end() if the instance is not present.
+
+equal_range(). If the value is present, the first iterator points to the first instance of the value
+and the second iterator points 1 past the last instance of the value. 
+If the last instance is the last element of the multiset, the second iterator is set equal to end(). 
+  pair< iterator, iterator > pos; 
+  pos = authors.equal_range( search_item ); 
+  for ( ; pos.first != pos.second; pos.first++ ) 
+
+Table 6.5. Operations Supported by the Stack Container
+
+
+Operation
+Function
+empty()
+returns true if the stack is empty; false otherwise.
+size()
+returns a count of the number of elements on the stack.
+pop()
+removes, but does not return, the top element from the stack.
+top()
+returns, but does not remove, the top element on the stack.
+push(item)
+places a new top element on the stack.
+ 
+Table 6.6. Operations Supported by Queues and Priority Queues
+
+
+Operations
+Function
+empty()
+returns true if the queue is empty; false otherwise.
+size()
+returns a count of the number of elements on the queue.
+pop()
+removes, but does not return, the front element from the queue. 
+In the case of the priority_queue, the front element represents the element with the highest priority.
+front()
+returns, but does not remove, the front element on the queue. This can only be applied to a queue.
+back()
+returns, but does not remove, the back element on the queue. This can only be applied to a queue.
+top()
+returns, but does not remove, the highest priority element of the priority_queue. 
+This can only be applied to a priority_queue.
+push(item)
+places a new element at the end of the queue. In the case of a priority_queue, 
+order the item based on its priority.
+
+If a parameter may refer to different objects within a function or if the parameter may refer to no object at all,
+a pointer parameter must be used
+
+int matrix[][10], 
+declares matrix to be a two-dimensional array. Each row consists of ten column elements.
+matrix can equivalently be declared as
+int (*matrix)[10] 
+
+The following declaration
+int *matrix[ 10 ]; 
+declares matrix to be an array of ten pointers to intS.
+
+Unlike a non-inline function, an inline function must be defined in every text file 
+in which the inline function is called.
+
+// single statement linkage directive 
+extern "C" void exit(int); 
+ 
+// compound statement linkage directive 
+extern "C" { 
+   int printf( const char* ... ); 
+   int scanf( const char* ... ); 
+} 
+ 
+// compound statement linkage directive 
+extern "C" { 
+#include <cmath> 
+} 
+
+
+
+其实，这是VC对变量存储的一个特殊处理。为了提高CPU的存储速度，VC对一些变量的起始地址做了"对齐"处理。
+在默认情况下，VC规定各成员变 量存放的起始地址相对于结构的起始地址的偏移量必须为该变量的类型所占用的字节数的倍数。
+下面列出常用类型的对齐方式(vc6.0,32位系统)。 
+类型 
+对齐方式（变量存放的起始地址相对于结构的起始地址的偏移量） 
+Char 
+偏移量必须为sizeof(char)即1的倍数 
+int 
+偏移量必须为sizeof(int)即4的倍数 
+float 
+偏移量必须为sizeof(float)即4的倍数 
+double 
+偏移量必须为sizeof(double)即8的倍数 
+Short 
+偏移量必须为sizeof(short)即2的倍数 
+
+各成员变量在存放的时候根据在结构中出现的顺序依次申请空间，同时按照上面的对齐方式调整位置，空缺的字节VC会自动填充。
+同时VC为了确保结构的大小为结构的字节边界数（即该结构中占用最大空间的类型所占用的字节数）的倍数，
+所以在为最后一个成员变量申请空间后，还会根据需要自动填充空缺的字节。 
+
+29.
+给定如下SQL数据库：Test(num INT(4)) 请用一条SQL语句返回num的最小值，但不许使用统计功能，如MIN，MAX等
+答:
+select top 1 num
+from Test
+order by num desc
