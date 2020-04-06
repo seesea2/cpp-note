@@ -1,0 +1,448 @@
+5.2.1 Sequence Containers
+
+Vectors
+A vector manages its elements in a dynamic array. It enables random access, 
+which means you can access each element directly with the corresponding index.
+Appending and removing elements at the end of the array is very fast. 
+However, inserting an element in the middle or at the beginning of the array takes time
+because all the following elements have to be moved to make room for it while maintaining the order. 
+
+Deques 
+The term deque (it rhymes with "check") is an abbreviation for "double-ended queue."
+It is a dynamic array that is implemented so that it can grow in both directions.
+
+Lists
+A list is implemented as a doubly linked list of elements. 
+This means each element in a list has its own segment of memory and refers to its predecessor and its successor.
+Lists do not provide random access. 
+
+Strings 
+Strings are similar to vectors except that their elements are characters. 
+
+Ordinary Arrays 
+An ordinary array that has static or dynamic size. 
+However, ordinary arrays are not STL containers because they don't provide member functions such as size() and empty().
+Nevertheless, the STL's design allows you to call algorithms for these ordinary arrays. 
+
+5.2.2 Associative Containers
+Sets
+A set is a collection in which elements are sorted according to their own values.
+Each element may occur only once, thus duplicates are not allowed. 
+
+Multisets 
+A multiset is the same as a set except that duplicates are allowed. 
+Thus, a multiset may contain multiple elements that have the same value.
+
+Maps
+A map contains elements that are key/value pairs.
+Each element has a key that is the basis for the sorting criterion and a value.
+Each key may occur only once, thus duplicate keys are not allowed. 
+
+Multimaps 
+A multimap is the same as a map except that duplicates are allowed.
+Thus, a multimap may contain multiple elements that have the same key. 
+
+All of these associative container classes have an optional template argument for the sorting criterion.
+The default sorting criterion is the operator <. 
+
+5.2.3 Container Adapters
+Stacks The name says it all. A stack is a container that manages its elements by the LIFO (last-in-first-out) policy.
+
+Queues 
+A queue is a container that manages its elements by the FIFO (first-in-first-out) policy.
+That is, it is an ordinary buffer. 
+
+Priority Queues 
+A priority queue is a container in which the elements may have different priorities.
+The priority is based on a sorting criterion that the programmer may provide (by default, operator < is used).
+A priority queue is, in effect, a buffer in which the next element is 
+The C++ Standard Library always the element that has the highest priority inside the queue.
+If more than one element has the highest priority, the order of these elements is undefined. 
+
+5.3 Iterators
+Operator *, Operator ++ , Operators == and != , Operator = 
+
+All container classes provide the same basic member functions that enable them to use iterators to navigate over their elements.
+The most important of these functions are as follows: begin(), end()
+list<char>::const_iterator pos; 
+for (pos = coll.begin(); pos != coll.end(); ++pos) 
+1.  container::iterator 
+	is provided to iterate over elements in read/write mode. 
+2.  container: : const_iterator 
+	is provided to iterate over elements in read-only mode. 
+
+Note that the preincrement operator (prefix ++) is used here.
+This is because it might have better performance than the postincrement operator.
+The latter involves a temporary object because it must return the old position of the iterator.
+For this reason, it generally is best to prefer ++pos over pos++. 
+
+5.3.1 Examples of Using Associative Containers 
+Examples of Using Sets and Multisets 
+set<int> coll;
+coll.insert(3)
+
+Examples of Using Maps and Multimaps
+multimap<int, string> coll;
+    coll.insert(make_pair(1, "Aefaohf"));
+
+Maps as Associative Arrays
+    map<int, string> coll;
+    coll[1] = "Aefaohf";
+    coll[3] = "berefaohf";
+    coll[2] = "fagAefaohf";
+
+5.3.2 Iterator Categories
+
+5.4 Algorithms
+min_element (coll.begin(), coll.end())
+max_element (coll.begin(), coll.end())
+sort (coll.begin(), coll.end());
+find (coll.begin(), coll.end(), 3);
+reverse (pos, coll.end()); 
+
+5.4.1 Ranges
+if find() is used to find the first and the last elements of a subset,
+you should consider that passing these iterator positions as a range will exclude the last element. 
+
+pos = find_if (coll.begin(), coll.end(),             //range 
+            compose_f_gx_hx(logical_or<bool>(),    //criterion 
+                            bind2nd(equal_to<int>(), 25), 
+                            bind2nd(equal_to<int>(), 35)));
+5.4.2 Handling Multiple Ranges 
+equal (coll1.begin(), coll1.end(), coll2.begin())
+copy (coll1 .begin(), coll1.end(),       //source 
+             coll2.begin());          //destination
+
+//resize destination to have enough room for the overwriting algorithm 
+coll2.resize (coll1. size()); or 
+deque<int> coll3(coll1 size());
+
+5.5 Iterator Adapters
+5.5.1 Insert Iterators
+vector<int> coll2; 
+copy (coll1.begin(), coll1.end(),      //source 
+     back_inserter(coll2));           //destination 
+deque<int> coll3; 
+copy (coll1.begin(), coll1.end(),      //source 
+     front_inserter(coll3));          //destination 
+set<int> coll4;
+copy (coll1.begin(), coll1.end(),      //source 
+             inserter(coll4,coll4.begin()));  //destination
+
+
+5.5.2 Stream Iterators
+copy (istream_iterator<string>(cin),      //start of source 
+             istream_iterator<string>(),         //end of source 
+             back_inserter(coll));               //destination
+unique_copy (coll.begin(), coll.end(),               //source 
+                    ostream_iterator<string> (cout, "\n")); 
+
+5.5.3 Reverse Iterators
+rbegin() and rend()
+
+5.6 Manipulating Algorithms 
+5.6.1 "Removing" Elements
+
+
+list<int>::iterator end = remove (coll.begin(), coll.end(), 3);
+distance(end,coll.end())
+coll.erase (end, coll.end());
+
+5.6.2 Manipulating Algorithms and Associative Containers
+set<int> coll; 
+int num = coll.erase(3);
+
+5.6.3 Algorithms versus Member Functions
+
+5.7 User-Defined Generic Functions 
+template <class T> 
+   inline void PRINT_ELEMENTS (const T& coll, const char* optcstr="") 
+   { 
+       typename T::const_iterator pos; 
+ 
+       std::cout << optcstr; 
+       for (pos=coll.begin(); pos!=coll.end(); ++pos) { 
+           std::cout << *pos << ' '; 
+       } 
+       std::cout << std::endl; 
+   } 
+
+5.8 Functions as Algorithm Arguments
+5.8.1 Examples of Using Functions as Algorithm Arguments
+for_each (coll.begin(), coll.end(),     //range 
+                 print);                       //operation 
+std::transform (coll1.begin(),coll1.end(),     //source 
+                       std::back_inserter(coll2),     //destination 
+                       square);                       //operation 
+
+5.8.2 Predicates 
+number = abs(number); 
+
+Binary Predicates
+sort (coll. begin(), coll. end() ,      //range The C++ Standard Library 
+personSortCriterion);             //sort criterion
+
+5.9 Function Objects
+5.9.1 What Are Function Objects? 
+The answer is: A functional behavior is something that you 
+can call by using parentheses and passing arguments. For example:       
+   function (arg1 ,arg2);   //a function call 
+
+class PrintInt { 
+     public: 
+       void operator() (int elem) const { 
+           cout << elem << ' '; 
+       } 
+   }; 
+vctor<int> coll; 
+for_each (coll.begin(), coll.end(),      //range 
+        PrintInt());                   //operation 
+cout << endl; 
+
+some advantages: 
+ Function objects are "smart functions."
+ Each function object has its own type. 
+ Function objects are usually faster than ordinary functions. 
+
+class MyClass
+{
+private:
+    int MyData;
+public:
+    MyClass(int v): MyData(v)     {    }
+
+    void operator() (int& elem)
+    {        elem += MyData;      }
+};
+void main() 
+{ 
+    list<int> coll;
+    list<int>::iterator pos;
+
+    coll.push_back(10);
+    coll.push_back(50);
+    coll.push_back(40);
+    coll.push_back(20);
+
+    for_each (coll.begin() , coll.end(),     //range 
+        MyClass(10));                 //operation 
+
+5.9.2 Predefined Function Objects
+transform (coll1 .begin(), coll1 .end(),               //source 
+                  back_inserter(coll2),      //destination 
+                  bind2nd(multiplies<int>() ,10));       //operation
+replace_if (coll2.begin(),coll2.end(),                 //range 
+               bind2nd(equal_to<int>(),70),  //replace criterion 
+               42);
+coll2.erase(remove_if(coll2.begin(),coll2.end(),       //range 
+                   bind2nd(less<int>() ,50)),       //remove criterion 
+                   coll2.end()); 
+for_each (coll.begin(), coll.end(),            //range 
+             mem_fun_ref (&Person: : save));      //operation
+
+5.10 Container Elements
+5.10.1 Requirements for Container Elements
+5.10.2 Value Semantics or Reference Semantics
+5.11 Errors and Exceptions Inside the STL
+5.11.2 Exception Handling
+5.12 Extending the STL 
+
+Chapter 6. STL Containers 
+6.1 Common Container Abilities and Operations
+6.1.1 Common Container Abilities
+6.1.2 Common Container Operations
+Initialization 
+•  Initialize with the elements of another container:
+•  Initialize with the elements of an array:
+•  Initialize by using standard input:
+Size Operations
+ size(), 2.  empty(), 3.  max_size()
+Comparisons
+usual comparison operators ==, ! =, <, <=, >, and >= 
+Assignments and swap ()
+
+6.2 Vectors
+capacity() returns the number of characters a vector could contain in its actual memory.
+To avoid reallocation, you can use  reserve() to ensure a certain capacity before you really need it. 
+std::vector<int> v;       // create an empty vector 
+    v.reserve (80);           // reserve memory for 80 elements 
+Another way to avoid reallocation is to initialize a vector with enough elements by passing additional arguments to the constructor. 
+    std::vector<T> v(5); 
+
+6.2.2 Vector Operations 
+Create, Copy, and Destroy Operations
+
+
+Nonmodifying Operations
+
+
+
+Element Access
+
+Only at() performs range checking. 
+
+Iterator Functions 
+
+Inserting and Removing Elements
+
+
+6.2.3 Using Vectors as Ordinary Arrays
+Note that you must not pass an iterator as the address of the first element. 
+Iterators of vectors have an implementation-specific type, which may be totally different from an ordinary pointer: 
+   printf("%s\n", v.begin());    // ERROR (might work, but not portable) 
+   printf("%s\n", &v[0]);        // OK 
+6.2.4 Exception Handling
+6.2.5 Examples of Using Vectors
+6.2.6 Class vector<bool>
+Therefore, template code might work for vectors of any type except bool.
+In addition, vector<bool> might perform slower than normal implementations 
+because element operations have to be transformed into bit operations. 
+
+
+6.3 Deques
+6.3.2 Deque Operations
+
+6.3.3 Exception Handling
+6.3.4 Examples of Using Deques
+
+6.4 Lists 
+6.4.1 Abilities of Lists
+6.4.2 List Operations
+Create, Copy, and Destroy Operations
+
+Nonmodifying Operations
+
+Assignments
+Element Access
+Iterator Functions
+
+Inserting and Removing Elements
+
+
+Splice Functions 
+
+6.4.3 Exception Handling 
+
+6.4.4 Examples of Using Lists
+
+6.5 Sets and Multisets
+6.5.2 Set and Multiset Operations
+Create, Copy, and Destroy Operations
+
+
+You can define the sorting criterion in two ways: 
+ As a template parameter.
+std::set<int,std::greater<int> > coll;
+ As a constructor parameter.
+Nonmodifying Operations
+
+
+Special Search Operations
+
+Assignments
+
+Iterator Functions
+
+Inserting and Removing Elements
+
+Therefore, the return type of a set returns two values by using a  pair structure 
+1. The member second of the pair structure returns whether the insertion was successful. 
+2. The member first of the  pair structure returns the position of the newly inserted element
+	or the position of the still existing element. 
+if (c.insert(3.3).second) { 
+        std::cout << "3.3 inserted" << std::endl; 
+    } 
+    else { 
+        std::cout << "3.3 already exists" << std::endl; 
+    } 
+
+std::pair<std::set<float>::iterator,bool> status; 
+    status = c.insert(value);
+6.5.3 Exception Handling
+6.5.4 Examples of Using Sets and Multisets
+6.5.5 Example of Specifying the Sorting Criterion at Runtime
+
+6.6 Maps and Multimaps
+6.6.2 Map and Multimap Operations
+Create, Copy, and Destroy Operations
+
+
+Nonmodifying and Special Search Operations
+
+Special Search Operations 
+
+Assignments
+Iterator Functions and Element Access 
+
+Trying to change the value of the key results in an error:
+However, changing the value of the element is no problem (as long as the type of the value is not constant): 
+Inserting and Removing Elements
+
+To insert a key/value pair, 
+ Use value_type
+std::map<std::string,float> coll; 
+coll.insert(std::map<std::string,float>::value_type("otto", 22.3));
+ Use pair<>
+coll.insert(std::pair<std::string,float>("otto",22.3));
+ Use make_pair()
+coll.insert(std::make_pair("otto",22.3))
+
+6.6.3 Using Maps as Associative Arrays
+
+
+6.7 Other STL Containers 
+6.7.1 Strings as STL Containers
+6.7.2 Ordinary Arrays as STL Containers
+6.7.3 Hash Tables
+
+6.8 Implementing Reference Semantics
+6.9 When to Use which Container
+6.10 Container Types and Members in Detail
+
+6.10.1 Type Definitions
+value_type, reference, const_reference, iterator, const_iterator, reverse_iterator, const_reverse_iterator, size_type, difference_type, key_type, mapped_type, key_compare, value_compare, allocator_type
+
+6.10.2 Create, Copy, and Destroy Operations
+
+6.10.3 Nonmodifying Operations 
+size (), empty (), max_size (), capacity (), reserve (size_type num) , 
+comparison (const container& c1, const container&, c2) , count (const T& value) , 
+find (const T& value) , lower_bound (const T& value) , upper_bound (const T& value),
+equal_range (const T& value) , value_comp (), 
+
+6.10.4 Assignments
+operator=, assign (size_type num, const T& value) , assign (InputIterator beg, Inputlterator end),
+swap (container& c),  swap (container& c1, container&, c2) , 
+
+6.10.5 Direct Element Access 
+container::at (size_type idx) , container::operator [ ] (size_type idx), 
+T& map::operator [] (const key_type& key), container::front (), container::back (), 
+
+6.10.6 Operations to Generate Iterators
+container::begin (), container::end (), container::rbegin (), container::rend (), 
+
+6.10.7 Inserting and Removing Elements
+container::insert (const T& value), container::insert (iterator pos, const T& value),
+container::insert (iterator pos, size_type num, const T& value), container::insert (InputIterator beg, InputIterator end), container::insert (iterator pos, InputIterator beg, InputIterator end), container::push_front (const T& value),  container::push_back (const T& value), list::remove (const T& value),  list::remove_if (UnaryPredicate op), 
+container::erase (const T& value), container::erase (iterator pos), container::erase (iterator beg, iterator end), container::pop_front (), container::pop_back (), container::resize (size_type num), 
+container::resize (size_type num, T value), container::clear ()
+
+6.10.8 Special Member Functions for Lists
+list:: unique (), list::unique (BinaryPredicate op), list::splice (iterator pos, list& source), 
+list::splice (iterator pos, list& source, iterator sourcePos), 
+list::splice (iterator pos, list& source, iterator sourceBeg, iterator sourceEnd), 
+list::sort (), list::sort (CompFunc op), list::merge (list& source),
+list::merge (list& source, CompFunc op), list::reverse ()
+
+6.10.9 Allocator Support
+allocator_type, get_allocator (), container container (const Allocator& alloc), 
+container::container (const CompFunc& op, const Allocator& alloc),
+container::container (InputIterator beg, InputIterator end, const Allocator& alloc), 
+container::container (InputIterator beg, InputIterator end, const CompFunc& op, const Allocator& alloc) ,  
+
+6.10.10 Overview of Exception Handling in STL Containers
+
+Chapter 7. STL Iterators
+7.2.5 Random Access Iterators
+7.2.6 The Increment and Decrement Problem of Vector Iterators
+7.3 Auxiliary Iterator Functions
